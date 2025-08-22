@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=ecommerce_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pyspark:
+    build:
+      context: .
+      dockerfile: docker/Pyspark/Dockerfile
+    container_name: pyspark
+    volumes:
+      - ./src:/app
+
+volumes:
+  pgdata:
