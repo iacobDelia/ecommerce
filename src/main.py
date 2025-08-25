@@ -8,7 +8,7 @@ spark = SparkSession \
     
 df = spark.read \
     .format("jdbc") \
-    .option("url", "jdbc:postgresql://host.docker.internal:5432/postgres") \
+    .option("url", "jdbc:postgresql://postgres:5432/ecommerce_db") \
     .option("dbtable", "cars") \
     .option("user", "myuser") \
     .option("password", "mypassword") \

@@ -22,6 +22,10 @@ RUN pip install --upgrade pip && \
 
 WORKDIR /app
 
+# Make the directory for the jdbc driver and copy it
+RUN mkdir -p /opt/spark/jars
+COPY docker/Pyspark/jars/postgresql-42.2.5.jar /opt/spark/jars/
+
 COPY src/ /app/
 
 CMD ["python", "main.py"]
