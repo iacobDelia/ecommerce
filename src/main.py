@@ -1,18 +1,24 @@
-from pyspark.sql import SparkSession
 
-spark = SparkSession \
-    .builder \
-    .appName("Python Spark SQL basic example") \
-    .config("spark.jars", "/opt/spark/jars/postgresql-42.2.5.jar") \
-    .getOrCreate()
-    
-df = spark.read \
-    .format("jdbc") \
-    .option("url", "jdbc:postgresql://postgres:5432/ecommerce_db") \
-    .option("dbtable", "cars") \
-    .option("user", "myuser") \
-    .option("password", "mypassword") \
-    .option("driver", "org.postgresql.Driver") \
-    .load()
+from config.snowflake_options import get_sf_options;
+from utils.init_session import get_session
+from etl.olist_db.extract import *;
 
-df.show()
+# load the spark session
+spark = get_session()
+
+# extract all the dataframes
+df_products = get_df_products(spark)
+df_sellers = get_df_sellers(spark)
+df_orders = get_df_orders(spark)
+df_customers = get_df_customers(spark)
+df_geolocation = get_df_geolocation(spark)
+df_order_items = get_df_order_items(spark)
+
+
+sf_options = get_sf_options();
+
+SNOWFLAKE_SOURCE_NAME = "net.snowflake.spark.snowflake"
+
+df_geolocation.limit(20).show()
+df_orders.show()
+df_customers.show()

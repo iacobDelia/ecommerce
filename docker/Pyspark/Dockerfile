@@ -16,17 +16,17 @@ RUN python3 -m venv /opt/venv
 # Make venv the default Python & Pip
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install PySpark + numpy inside venv
+# Install PySpark (downgraded to match Snowflake Spark connector)
 RUN pip install --upgrade pip && \
-    pip install pyspark numpy
-
-WORKDIR /app
+    pip install pyspark==3.4.4 numpy snowflake-connector-python
 
 # Make the directory for the jdbc driver and copy it
 RUN mkdir -p /opt/spark/jars
-COPY docker/Pyspark/jars/postgresql-42.2.5.jar /opt/spark/jars/
 
 COPY src/ /app/
+
+WORKDIR /app
+
 
 CMD ["python", "main.py"]
 
