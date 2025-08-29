@@ -16,7 +16,7 @@ RUN python3 -m venv /opt/venv
 # Make venv the default Python & Pip
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install PySpark (downgraded to match Snowflake Spark connector)
+# Install PySpark
 RUN pip install --upgrade pip && \
     pip install pyspark==3.4.4 numpy snowflake-connector-python
 
@@ -29,5 +29,4 @@ WORKDIR /app
 
 
 CMD ["python", "main.py"]
-
 

@@ -17,6 +17,10 @@ services:
     container_name: pyspark
     volumes:
       - ./src:/app
+    # ports:
+    #   - "4040:4040"
+    # stdin_open: true
+    # tty: true
 
 volumes:
   pgdata:
