@@ -1,4 +1,4 @@
-from pyspark.sql.functions import col, when, count, lit, coalesce
+from pyspark.sql import functions as F
 
 def apply_star_schema(df_products,
                     df_sellers,
@@ -43,23 +43,45 @@ def drop_columns(df_products,
                 df_geolocation,
                 df_order_items)
 
-def clean_nulls(df_products,
+def show_nulls(df_products,
                     df_sellers,
                     df_orders,
                     df_customers,
                     df_geolocation,
                     df_order_items):
         for df_name, df in locals().items():
-                df.select([count(when(col(c).isNull() | (col(c) == ""), c)).alias(c)
+                df.select([F.count(F.when(F.col(c).isNull() | (F.col(c) == ""), c)).alias(c)
                            for c in df.columns]).show()
-
+def clean_nulls(df_products,
+                    df_sellers,
+                    df_orders,
+                    df_customers,
+                    df_geolocation,
+                    df_order_items):
+        # replace nulls and empty strings in product category name
+        df_products = df_products.withColumn(
+               "product_category_name",
+               F.when(
+                      ((F.col("product_category_name").isNull()) | (F.col("product_category_name") == "")),
+                      "UNKNOWN")
+                      .otherwise(F.col("product_category_name"))
+               
+        )
+        df_products = df_products.fillna({"product_photos_qty": 0})
+        return (df_products,
+                df_sellers,
+                df_orders,
+                df_customers,
+                df_geolocation,
+                df_order_items)
+        
 # adds a volume column and removes the 3 length, height, width columns
 def calculate_volume(df_products):
        return (df_products.withColumn(
               "product_volume_cm",
-              coalesce(col("product_length_cm"), lit(1)) *
-              coalesce(col("product_height_cm"), lit(1)) *
-              coalesce(col("product_width_cm"), lit(1)))
+              F.coalesce(F.col("product_length_cm"), F.lit(1)) *
+              F.coalesce(F.col("product_height_cm"), F.lit(1)) *
+              F.coalesce(F.col("product_width_cm"), F.lit(1)))
               .drop("product_length_cm", "product_height_cm", "product_width_cm")) 
 
 def apply_transformations(df_products,
@@ -70,10 +92,10 @@ def apply_transformations(df_products,
                     df_order_items):
     df_products = calculate_volume(df_products)
     dfs = [df_products, df_sellers, df_orders, df_customers, df_geolocation, df_order_items]
-
-    dfs = drop_columns(*dfs)
     
+    dfs = drop_columns(*dfs)
+    dfs = clean_nulls(*dfs)
     dfs = apply_star_schema(*dfs)
 
-    clean_nulls(*dfs)
+    show_nulls(*dfs)
     return dfs
