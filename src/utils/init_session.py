@@ -1,5 +1,4 @@
 from pyspark.sql import SparkSession
-from etl.olist_db.transform import *;
 
 def get_session():
     return SparkSession.builder \

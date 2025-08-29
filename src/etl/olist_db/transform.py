@@ -11,12 +11,11 @@ def apply_star_schema(df_products,
         df_fact_order_items = df_order_items.join(
         df_orders.select("order_id", "customer_id"),
         on="order_id",
-        how="inner"
-        )
+        how="inner")
+        
         # drop customers_id from df_orders
         df_dim_orders = df_orders.drop("customer_id")
 
-        
         return (df_products,
                 df_sellers,
                 df_dim_orders,
@@ -31,6 +30,7 @@ def drop_columns(df_products,
                     df_geolocation,
                     df_order_items):
         
+        # drop irrelevant columns
         df_products_mod = df_products.drop("product_name_lenght", "product_description_lenght")
         df_orders_mod = df_orders.drop("order_approved_at", "order_delivered_carrier_date")
 
@@ -43,6 +43,7 @@ def drop_columns(df_products,
                 df_geolocation,
                 df_order_items)
 
+# shows the number of nulls or blank strings for each column
 def show_nulls(df_products,
                     df_sellers,
                     df_orders,
@@ -52,6 +53,8 @@ def show_nulls(df_products,
         for df_name, df in locals().items():
                 df.select([F.count(F.when(F.col(c).isNull() | (F.col(c) == ""), c)).alias(c)
                            for c in df.columns]).show()
+
+# cleans the nulls from some of the tables
 def clean_nulls(df_products,
                     df_sellers,
                     df_orders,
@@ -68,6 +71,7 @@ def clean_nulls(df_products,
                
         )
         df_products = df_products.fillna({"product_photos_qty": 0})
+
         return (df_products,
                 df_sellers,
                 df_orders,
@@ -84,6 +88,7 @@ def calculate_volume(df_products):
               F.coalesce(F.col("product_width_cm"), F.lit(1)))
               .drop("product_length_cm", "product_height_cm", "product_width_cm")) 
 
+# applies all the transformations
 def apply_transformations(df_products,
                     df_sellers,
                     df_orders,
