@@ -1,0 +1,11 @@
+.vscode/
+artifacts/
+
+logs/
+
+docker-temp.txt
+__pycache__/
+snowflake_options.py
+azure.py
+.env
+config/airflow.cfg
