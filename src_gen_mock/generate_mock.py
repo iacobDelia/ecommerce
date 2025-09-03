@@ -23,13 +23,33 @@ def generate_product():
 
 def generate_customer():
     # extract the zip codes
-    with open("./src_gen_mock/sample/zip_codes_prefix.json", 'r') as f:
+    with open("./src_gen_mock/sample/geolocation_data.json", 'r') as f:
         data = json.load(f)
     
-    zip_codes_list = [item["geolocation_zip_code_prefix"] for item in data["zip_codes"]]
+    location_list = data["locations"]
+    location = random.choice(location_list)
     # generate random values
     generated_customer = {
-        "customer_zip_code_prefix": random.choice(zip_codes_list)
-        
-
+        "customer_zip_code_prefix": location["geolocation_zip_code_prefix"],
+        "customer_city": location["geolocation_city"],
+        "customer_state": location["geolocation_state"]
     }
+    return generated_customer
+
+def generate_order_item(order_id, order_item_id, product_id, seller_id):
+    order_item = {
+        "order_id": order_id,
+        "order_item_id": order_item_id,
+        "product_id": product_id,
+        "seller_id": seller_id,
+        "price": random.randrange(7, 400),
+        "freight_value": random.randrange(7, 25)
+    }
+    return order_item
+
+def generate_order(customer_id):
+    generated_order = {
+        "customer_id": customer_id,
+        "order_status": "delivered",
+    }
+    return generated_order

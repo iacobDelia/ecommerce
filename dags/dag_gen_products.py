@@ -27,6 +27,7 @@ def insert_product(**kwargs):
         VALUES({", ".join(["%s"] * len(column_names))})        
         """
     hook.run(insert_sql, parameters = values)
+
 default_args = {
     'owner': 'delia',
     'retries': 5,
@@ -50,4 +51,4 @@ with DAG(
 
     )
 
-task1 >>task2
+task1 >> task2
