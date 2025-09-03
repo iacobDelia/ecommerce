@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.providers.docker.operators.docker import DockerOperator
-from docker.types import Mount
 
 default_args = {
     'owner': 'delia',
@@ -16,7 +15,7 @@ with DAG(
     default_args = default_args,
     description = 'the pyspark dag to process ecommerce data',
     start_date = datetime(2025, 9, 1, 1),
-    schedule='@daily'
+    schedule='@hourly'
 ) as dag:
     task1 = DockerOperator(
         task_id="run_pyspark_job",
