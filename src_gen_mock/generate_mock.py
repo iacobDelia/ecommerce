@@ -11,8 +11,8 @@ def generate_product():
     # generate random values
     generated_product = {
         "product_category_name": random.choice(category_list),
-        "product_name_lenght": random.randrange(15, 70),
-        "product_description_lenght": random.randrange(100, 4000),
+        "product_name_length": random.randrange(15, 70),
+        "product_description_length": random.randrange(100, 4000),
         "product_photos_qty": random.randrange(0, 4),
         "product_weight_g": random.randrange(20, 200) * 10,
         "product_length_cm": random.randrange(2, 50),

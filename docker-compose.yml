@@ -36,6 +36,7 @@ x-airflow-common:
     # - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data 
     - /var/run/docker.sock:/var/run/docker.sock
     - ${AIRFLOW_PROJ_DIR:-.}/src_gen_mock:/opt/airflow/src_gen_mock
+    - /tmp:/tmp
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -59,6 +60,7 @@ services:
       context: .
       dockerfile: docker/Pyspark/Dockerfile
     container_name: pyspark
+    image: ecommerce-pyspark:latest
     depends_on:
       - postgres_ecommerce
     volumes:

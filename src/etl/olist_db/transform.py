@@ -31,7 +31,7 @@ def drop_columns(df_products,
                     df_order_items):
         
         # drop irrelevant columns
-        df_products_mod = df_products.drop("product_name_lenght", "product_description_lenght")
+        df_products_mod = df_products.drop("product_name_length", "product_description_length")
         df_orders_mod = df_orders.drop("order_approved_at", "order_delivered_carrier_date")
 
         # drop city and state from customers - can be found in geolocation too
