@@ -18,8 +18,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 # Install PySpark
 RUN pip install --upgrade pip && \
-    pip install pyspark==3.4.4 numpy snowflake-connector-python
-
+    pip install pyspark==3.4.4 numpy snowflake-connector-python python-dotenv
 # Make the directory for the jdbc driver and copy it
 RUN mkdir -p /opt/spark/jars
 
