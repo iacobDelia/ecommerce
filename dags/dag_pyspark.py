@@ -25,5 +25,5 @@ with DAG(
         # command="python /app/main.py",
         docker_url="unix://var/run/docker.sock",
         network_mode="ecommerce_default",
-        mount_tmp_dir=True,
+        mount_tmp_dir=False,
 )
