@@ -93,6 +93,9 @@ def calculate_volume(df_products):
               F.coalesce(F.col("product_width_cm"), F.lit(1)))
               .drop("product_length_cm", "product_height_cm", "product_width_cm")) 
 
+# the dates in the original dataset were all around 2019
+# but when adding new entries in the database, theyre put as the current date
+# they need to be corrected for more accurate statistics
 def correct_shipping_date(df_order_items):
        return df_order_items.withColumn(
               "shipping_limit_date",
