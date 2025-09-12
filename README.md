@@ -2,7 +2,7 @@
 **A data pipeline using PostgreSQL, PySpark and Snowflake, orchestrated by Airflow**
 
 ## Architecture
-![Architecture pipeline](/etl_diagram.png)
+![Architecture pipeline](images/etl_diagram.png)
 The data is first injected inside PostgreSQL using CSV files taken from the public dataset released by OList. A few DAGs are also scheduled using Airflow to run periodically, inserting mock data generated using Python scripts.
 
 
@@ -11,6 +11,13 @@ The data is then loaded to Snowflake.
 
 Postgres, Airflow and Pyspark each have their own docker container. In the case of Pyspark, its container is started by Airflow.
 
+## Visualization
+I also used Metabase to create dashboards in order to better visualize and understand the data.
+
+<p float="left">
+  <img src="images/orders_dashboard.png" width="600" />
+  <img src="images/customers_dashboard.png" width="600" /> 
+</p>
 
 ## Project structure
 ```
